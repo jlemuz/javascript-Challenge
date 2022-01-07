@@ -8,59 +8,63 @@ const generateChar = (min, max)=>{
     return String.fromCharCode(randomChar);
 } 
 //Function to select random value from function array
+//Will be used to randonly select a function based on the filtered array
 const generateNum = (min, max)=>{
   randomFunc = Math.floor(Math.random() * (max - min) + min);
   return randomFunc;
 } 
-//Functions to generate different character sets: upper, lower, and special characters
+//Functions to generate different character sets:
+//uppercase, lowercase, numbers and special characters
 const generateUpper = ()=> generateChar(65,90);
 const generateLower= ()=> generateChar(97, 122);
 const generateSpecial= ()=> generateChar(33, 47);
 const generateSpecial2= ()=> generateChar(58,64);
+//returns a number not a string
 const generateNumber = ()=> generateNum(0,9);
 
-//filter out functions based on parameters
-//create new array
-//randomly selectFunct a value from that array
-
+//This is a set of prompts for the length and all the criteria options
+//Users will need to confirm which criteria they'd like
 const lengthPrompt = ()=> {
-    let length = window.prompt("Length of password?" );
-    console.log(length);
+    let length = window.prompt("Length of password? Please enter a digit between 8 and 128." );
     return length;
 }
 const upperPrompt = ()=> {
-  let upper = window.confirm("Include upper?");
-  console.log(upper);
+  let upper = window.confirm("Include uppercase characters?");
   return upper;
 }
 const lowerPrompt = ()=> {
-  let lower = window.confirm("Include lower?");
-  console.log(lower);
+  let lower = window.confirm("Include lowercase characters?");
   return lower;
 }
 const numberPrompt = ()=> {
-  let includeNum = window.confirm("Include numbers?");
-  console.log(includeNum);
+  let includeNum = window.confirm("Include numeric characters?");
   return includeNum;
 }
 const specialPrompt = ()=> {
-  let special = window.confirm("Include special?");
-  console.log(special);
+  let special = window.confirm("Include special characters?");
   return special;
 }
-const generatePassword = ()=>{
-  do {length = lengthPrompt();}
-  while(( /^[0-9.,]+$/.test(length))===false)
+//This function takes in the prompt parameters, passes the values into the function array
+//and generates the random password
 
+const generatePassword = ()=>{
+  //This prompt will occur until the user enters a digit betweem 8-128
+  do {length = lengthPrompt();}
+  while(( /^[0-9.,]+$/.test(length))===false || ((/^[8-9]$|^[1-9][0-9]$|^[1][012][0-8]$/).test(length))===false)
+
+  //This set of confirm prompts will appear until at least one criteria is selected
   do{
     window.alert("You must confirm at least one of the criteria")
     upper = upperPrompt();
     lower = lowerPrompt();
+    num = numberPrompt();
     special = specialPrompt();
-    num = numberPrompt();}
+
+  }
+    //this while case shows that all the criteria were set to false
   while(upper!=true && lower!=true && special!=true && num!=true)
 
-//Array of functions
+//Array of functions initialized
   const funcList = [
     {name: generateUpper, include: upper},  //0
     {name: generateLower, include: lower},   //1
@@ -69,11 +73,15 @@ const generatePassword = ()=>{
     {name: generateNumber, include: num}    //4
   ];
 
+  //This function filters out the false crieria and returns an array of functions with only the
+  //included criteria
   const passPattern = funcList.filter(a=> a.include===true).map(i=> {return i.name;});
+  //The password string is initialized and the for loop loops through the filtered 
+  //function array. Therefore, only characters that the user selected to be included
+  //will be added to the password string
   pass = '';
     for(i=0; i<length; i++){
       pass+=passPattern[generateNum(0,passPattern.length)]();
-      console.log(pass);
     }
 
   return pass;
