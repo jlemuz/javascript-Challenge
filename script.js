@@ -22,15 +22,32 @@ const generateSpecial2= ()=> generateChar(58,64);
 const generateNumber = ()=> generateNum(0,9);
 const selectFunct = ()=> generateNum(0,5);
 
-
+let upper = true;
+let lower = true;
+let special = true;
 //Array of functions
 const funcList = [
-  generateUpper,   //0
-  generateLower,   //1
-  generateSpecial, //2
-  generateSpecial2, //3
-  generateNumber    //4
+  {name: generateUpper, include: upper},  //0
+  {name: generateLower, include: lower},   //1
+  {name: generateSpecial, include: special}, //2
+  {name: generateSpecial2, include: special}, //3
+  {name: generateNumber, include: special}    //4
 ];
+
+//returns new array of functions
+const includeFunc = funcList.map((item)=>{return item.name;});
+//console.log(includeFunc);
+//invokes new array
+//console.log(includeFunc[selectFunct()]());
+
+//filters out false includes and creates a new array with only included values
+const passPattern = funcList.filter(a=> a.include===true).map(i=> {return i.name;});
+pass = '';
+for(i=0; i<12; i++){
+  pass+=passPattern[generateNum(0,passPattern.length)]();
+}
+console.log(pass)
+
 
 //filter out functions based on parameters
 //create new array
@@ -38,12 +55,12 @@ const funcList = [
 
 
 
-pass = '';
-for(i=0; i<12; i++){
-  //console.log(selectFunct());
- pass+=funcList[selectFunct()]();
-}
-console.log(pass);
+// pass = '';
+// for(i=0; i<12; i++){
+//   //console.log(selectFunct());
+//  pass+=funcList[selectFunct()]();
+// }
+// console.log(pass);
 
 
 // const lengthPrompt = ()=> {
@@ -52,7 +69,7 @@ console.log(pass);
 //     return length;
 // }
 // const upperPrompt = ()=> {
-//   let upper = window.prompt("Include upper?");
+//   let upper = window.confirm("Include upper?");
 //   console.log(upper);
 //   return upper;
 // }
