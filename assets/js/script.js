@@ -23,7 +23,7 @@ const generateSpecial2= ()=> generateChar(58,64);
 const generateNumber = ()=> generateNum(0,9);
 
 //This is a set of prompts for the length and all the criteria options
-//Users will need to confirm which criteria they'd like
+//Users will need to confirm which criteria they'd like and the value will be assigned to a variable
 const lengthPrompt = ()=> {
     let length = window.prompt("Length of password? Please enter a digit between 8 and 128." );
     return length;
